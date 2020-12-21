@@ -1,19 +1,41 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+    StreamApp,
+    FlatFeed,
+    Activity,
+    LikeButton,
+    StatusUpdateForm,
+} from 'expo-activity-feed';
 
-export default function App() {
+const CustomActivity = (props) => {
+  console.log(props);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    <Activity
+      {...props}
+      Footer={
+        <LikeButton {...props} />
+      }
+    />
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={{flex: 1}} forceInset={{ top: 'always' }}>
+        <StreamApp
+            apiKey="jt26nbs7uctt"
+            appId="102662"
+            token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoidXNlci1vbmUifQ.3z1LV0Rns3lI1HAZLZd11kZOs5CvHdJIA0peleuv4VY"
+        >
+          <FlatFeed Activity={CustomActivity} notify />
+          <StatusUpdateForm feedGroup="timeline" />
+        </StreamApp>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+};
+
+export default App;
